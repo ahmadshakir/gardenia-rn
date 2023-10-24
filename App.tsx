@@ -123,7 +123,7 @@ type Question = {
 const App = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Question[]>([]);
-
+  const [text, onChangeText] = React.useState('Text');
   const getMovies = async () => {
     try {
       const response = await fetch('http://localhost:7240/api/SurveyQuestion');
@@ -154,7 +154,11 @@ const App = () => {
                <Text>
             {item.question}
           </Text>
-          <TextInput/>
+          <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={text}
+      />
           </View>
        
           )}
