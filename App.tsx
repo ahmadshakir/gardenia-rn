@@ -40,7 +40,7 @@ const TextInputExample = () => {
 const getSurveyQuestion = async () => {
   try {
     const response = await fetch(
-      'https://localhost:7240/api/SurveyQuestion',
+      'http://localhost:7240/api/SurveyQuestion',
     );
     const json = await response.json();
     Alert.alert(JSON.stringify(json))
