@@ -5,21 +5,11 @@ import {useEffect, useState} from 'react';
 const TextInputExample = () => {
   const [text, onChangeText] = React.useState('Text');
   const [data, setData] = useState<Question[]>([]);
-  
-  const getSurveyQuestion = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:7240/api/SurveyQuestion',
-      );
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   useEffect(() => {
     getSurveyQuestion();
   }, []);
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -28,8 +18,8 @@ const TextInputExample = () => {
       <Text> {input.question}</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeText}
-        value={text}
+        // onChangeText={onChangeText}
+        // value={text}
       />
       </View>
       ))}
@@ -50,7 +40,7 @@ const getSurveyQuestion = async () => {
       'http://localhost:7240/api/SurveyQuestion',
     );
     const json = await response.json();
-    Alert.alert(JSON.stringify(json))
+    // Alert.alert(JSON.stringify(json))
     return json.questions;
   } catch (error) {
     console.error(error);
@@ -70,38 +60,38 @@ const postSurvey = async () => {
   }
 };
 
-const FlatListBasics = () => {
-  return (
-    <View style={styless.container}>
-      <FlatList
-        data={[
-          {key: 'Devin'},
-          {key: 'Dan'},
-          {key: 'Dominic'},
-          {key: 'Jackson'},
-          {key: 'James'},
-          {key: 'Joel'},
-          {key: 'John'},
-          {key: 'Jillian'},
-          {key: 'Jimmy'},
-          {key: 'Julie'},
-        ]}
-        renderItem={({item}) => <Text style={styless.item}>{item.key}</Text>}
-      />
-    </View>
-  );
-};
-const styless = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 22,
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-});
+// const FlatListBasics = () => {
+//   return (
+//     <View style={styless.container}>
+//       <FlatList
+//         data={[
+//           {key: 'Devin'},
+//           {key: 'Dan'},
+//           {key: 'Dominic'},
+//           {key: 'Jackson'},
+//           {key: 'James'},
+//           {key: 'Joel'},
+//           {key: 'John'},
+//           {key: 'Jillian'},
+//           {key: 'Jimmy'},
+//           {key: 'Julie'},
+//         ]}
+//         renderItem={({item}) => <Text style={styless.item}>{item.key}</Text>}
+//       />
+//     </View>
+//   );
+// };
+// const styless = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     paddingTop: 22,
+//   },
+//   item: {
+//     padding: 10,
+//     fontSize: 18,
+//     height: 44,
+//   },
+// });
 
 
 const styles = StyleSheet.create({
@@ -113,11 +103,11 @@ const styles = StyleSheet.create({
   },
 });
 
-type Movie = {
-  id: string;
-  title: string;
-  releaseYear: string;
-};
+// type Movie = {
+//   id: string;
+//   title: string;
+//   releaseYear: string;
+// };
 
 type Question = {
   id: string;
