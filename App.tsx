@@ -1,8 +1,18 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TextInput,Button,Alert, Text, ScrollView,View,ActivityIndicator} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Button,
+  Alert,
+  Text,
+  ScrollView,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {useEffect, useState} from 'react';
 
-type Question = { id: string; question: string;};
+type Question = {id: string; question: string};
 
 const survey = () => {
   const [text, onChangeText] = React.useState('Text');
@@ -10,9 +20,7 @@ const survey = () => {
 
   const getSurveyQuestion = async () => {
     try {
-      const response = await fetch(
-        'http://localhost:7240/api/SurveyQuestion',
-      );
+      const response = await fetch('http://localhost:7240/api/SurveyQuestion');
       const json = await response.json();
       setData(json);
       // Alert.alert(JSON.stringify(json))
@@ -22,27 +30,29 @@ const survey = () => {
     }
   };
 
-  useEffect(() => { getSurveyQuestion(); }, []);
+  useEffect(() => {
+    getSurveyQuestion();
+  }, []);
 
   return (
     <SafeAreaView>
       <ScrollView>
-      {data.map(input => (
-        <View>
-      <Text> {input.question}</Text>
-      <TextInput
-        style={styles.input}
-        // onChangeText={onChangeText}
-        // value={text}
-      />
-      </View>
-      ))}
-      <Button
-      onPress={() =>postSurvey()}
-        title="Submit"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
+        {data.map(input => (
+          <View>
+            <Text> {input.question}</Text>
+            <TextInput
+              style={styles.input}
+              // onChangeText={onChangeText}
+              // value={text}
+            />
+          </View>
+        ))}
+        <Button
+          onPress={() => postSurvey()}
+          title="Submit"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -50,11 +60,9 @@ const survey = () => {
 
 const postSurvey = async () => {
   try {
-    const response = await fetch(
-      'http://localhost:7240/api/SurveyQuestion',
-    );
+    const response = await fetch('http://localhost:7240/api/SurveyQuestion');
     const json = await response.json();
-    Alert.alert(JSON.stringify(json))
+    Alert.alert(JSON.stringify(json));
     return json.movies;
   } catch (error) {
     console.error(error);
