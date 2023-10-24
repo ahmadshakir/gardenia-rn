@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TextInput,Button,Alert, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, TextInput,Button,Alert, Text, ScrollView} from 'react-native';
 
 const TextInputExample = () => {
   const [text, onChangeText] = React.useState('Text');
@@ -7,6 +7,7 @@ const TextInputExample = () => {
 
   return (
     <SafeAreaView>
+      <ScrollView>
       <Text>Q1</Text>
       <TextInput
         style={styles.input}
@@ -26,14 +27,30 @@ const TextInputExample = () => {
         value={text}
       />
       <Button
-      onPress={() => Alert.alert('Simple Button pressed')}
+      onPress={() =>getSurveyQuestion()}
         title="Submit"
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
+      </ScrollView>
     </SafeAreaView>
   );
 };
+
+const getSurveyQuestion = async () => {
+  try {
+    const response = await fetch(
+      'https://192.168.0.106:7240/api/SurveyQuestion',
+    );
+    const json = await response.json();
+    Alert.alert(JSON.stringify(json))
+    return json.movies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
 
 const styles = StyleSheet.create({
   input: {
