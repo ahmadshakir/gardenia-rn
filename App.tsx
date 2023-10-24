@@ -1,8 +1,11 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TextInput,Button,Alert, Text, ScrollView} from 'react-native';
+import {SafeAreaView, StyleSheet, TextInput,Button,Alert, Text, ScrollView,FlatList,View,ActivityIndicator} from 'react-native';
+import {useEffect, useState} from 'react';
 
 const TextInputExample = () => {
   const [text, onChangeText] = React.useState('Text');
+  const [text2, onChangeText2] = React.useState('Text');
+  const [text3, onChangeText3] = React.useState('Text');
   const [number, onChangeNumber] = React.useState('');
 
   return (
@@ -17,14 +20,14 @@ const TextInputExample = () => {
      <Text>Q2</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeText}
-        value={text}
+        onChangeText={onChangeText2}
+        value={text2}
       />
       <Text>Q3</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeText}
-        value={text}
+        onChangeText={onChangeText3}
+        value={text3}
       />
       <Button
       onPress={() =>postSurvey()}
@@ -44,7 +47,7 @@ const getSurveyQuestion = async () => {
     );
     const json = await response.json();
     Alert.alert(JSON.stringify(json))
-    return json.movies;
+    return json.questions;
   } catch (error) {
     console.error(error);
   }
@@ -63,6 +66,38 @@ const postSurvey = async () => {
   }
 };
 
+const FlatListBasics = () => {
+  return (
+    <View style={styless.container}>
+      <FlatList
+        data={[
+          {key: 'Devin'},
+          {key: 'Dan'},
+          {key: 'Dominic'},
+          {key: 'Jackson'},
+          {key: 'James'},
+          {key: 'Joel'},
+          {key: 'John'},
+          {key: 'Jillian'},
+          {key: 'Jimmy'},
+          {key: 'Julie'},
+        ]}
+        renderItem={({item}) => <Text style={styless.item}>{item.key}</Text>}
+      />
+    </View>
+  );
+};
+const styless = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 22,
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+});
 
 
 const styles = StyleSheet.create({
@@ -74,4 +109,68 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextInputExample;
+type Movie = {
+  id: string;
+  title: string;
+  releaseYear: string;
+};
+
+type Question = {
+  id: string;
+  question: string;
+};
+
+const App = () => {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState<Question[]>([]);
+
+  const getMovies = async () => {
+    try {
+      const response = await fetch('http://localhost:7240/api/SurveyQuestion');
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getMovies();
+  }, []);
+
+  return (
+    <View style={{flex: 1, padding: 24}}>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={({id}) => id}
+          renderItem={({item}) => (
+           
+            <View>
+               <Text>
+            {item.question}
+          </Text>
+          <TextInput/>
+          </View>
+       
+          )}
+        />
+        
+      )}
+      <Button
+      onPress={() =>postSurvey()}
+        title="Submit"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
+    </View>
+  );
+};
+
+// export default TextInputExample;
+// export default FlatListBasics;
+export default App;
