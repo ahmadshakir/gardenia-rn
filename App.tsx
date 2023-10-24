@@ -27,7 +27,7 @@ const TextInputExample = () => {
         value={text}
       />
       <Button
-      onPress={() =>getSurveyQuestion()}
+      onPress={() =>postSurvey()}
         title="Submit"
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
@@ -38,6 +38,19 @@ const TextInputExample = () => {
 };
 
 const getSurveyQuestion = async () => {
+  try {
+    const response = await fetch(
+      'http://localhost:7240/api/SurveyQuestion',
+    );
+    const json = await response.json();
+    Alert.alert(JSON.stringify(json))
+    return json.movies;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const postSurvey = async () => {
   try {
     const response = await fetch(
       'http://localhost:7240/api/SurveyQuestion',
