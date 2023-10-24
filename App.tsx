@@ -38,7 +38,7 @@ const survey = () => {
     <SafeAreaView>
       <ScrollView>
         {data.map(input => (
-          <View>
+          <View key={input.id}>
             <Text> {input.question}</Text>
             <TextInput
               style={styles.input}
