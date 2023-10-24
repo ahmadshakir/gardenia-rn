@@ -4,31 +4,35 @@ import {useEffect, useState} from 'react';
 
 const TextInputExample = () => {
   const [text, onChangeText] = React.useState('Text');
-  const [text2, onChangeText2] = React.useState('Text');
-  const [text3, onChangeText3] = React.useState('Text');
-  const [number, onChangeNumber] = React.useState('');
-
+  const [data, setData] = useState<Question[]>([]);
+  
+  const getSurveyQuestion = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:7240/api/SurveyQuestion',
+      );
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getSurveyQuestion();
+  }, []);
   return (
     <SafeAreaView>
       <ScrollView>
-      <Text>Q1</Text>
+      {data.map(input => (
+        <View>
+      <Text> {input.question}</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeText}
         value={text}
       />
-     <Text>Q2</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeText2}
-        value={text2}
-      />
-      <Text>Q3</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeText3}
-        value={text3}
-      />
+      </View>
+      ))}
       <Button
       onPress={() =>postSurvey()}
         title="Submit"
@@ -175,6 +179,6 @@ const App = () => {
   );
 };
 
-// export default TextInputExample;
+export default TextInputExample;
 // export default FlatListBasics;
-export default App;
+// export default App;
