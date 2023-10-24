@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TextInput,Button,Alert} from 'react-native';
+import {SafeAreaView, StyleSheet, TextInput,Button,Alert, Text} from 'react-native';
 
 const TextInputExample = () => {
   const [text, onChangeText] = React.useState('Text');
@@ -7,24 +7,23 @@ const TextInputExample = () => {
 
   return (
     <SafeAreaView>
+      <Text>Q1</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeText}
         value={text}
       />
+     <Text>Q2</Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="placeholder"
-        keyboardType="numeric"
+        onChangeText={onChangeText}
+        value={text}
       />
-       <TextInput
+      <Text>Q3</Text>
+      <TextInput
         style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="placeholder"
-        keyboardType="numeric"
+        onChangeText={onChangeText}
+        value={text}
       />
       <Button
       onPress={() => Alert.alert('Simple Button pressed')}
