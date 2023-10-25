@@ -70,6 +70,7 @@ const survey = () => {
       inputData.forEach(element => {
         postAnswer(element.text)
       });
+      Alert.alert(JSON.stringify(json));
       return json;
     } catch (error) {
       console.error(error);
@@ -90,7 +91,7 @@ const survey = () => {
         }),
       });
       const json = await response.json();
-      Alert.alert(JSON.stringify(json));
+      // Alert.alert(JSON.stringify(json));
       return json;
     } catch (error) {
       console.error(error);
