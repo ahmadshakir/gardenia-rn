@@ -20,7 +20,7 @@ const survey = () => {
   const [inputData, setInputData] = useState<{text: string; index: number}[]>(
     [],
   );
-  const [submittedId, setSubmittedId] = useState<{id: number}[]>([]);
+  let submittedId = 0
 
   const addValues = (text: string, index: number) => {
     const dataArray = inputData;
@@ -66,8 +66,8 @@ const survey = () => {
         }),
       });
       const json = await response.json();
-      setSubmittedId(json.id);
-      postAnswer();
+      submittedId=json.id
+      postAnswer()
       return json;
     } catch (error) {
       console.error(error);
@@ -83,10 +83,14 @@ const survey = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          surveysFk: 1,
+          surveysFk: Number(submittedId),
           answer: 'ok',
         }),
       });
+      Alert.alert(JSON.stringify({
+        surveysFk: Number(submittedId),
+        answer: 'ok',
+      }));
       const json = await response.json();
       Alert.alert(JSON.stringify(json));
       return json;
