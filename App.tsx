@@ -67,14 +67,16 @@ const survey = () => {
       });
       const json = await response.json();
       submittedId=json.id
-      postAnswer()
+      inputData.forEach(element => {
+        postAnswer(element.text)
+      });
       return json;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const postAnswer = async () => {
+  const postAnswer = async (answer: String) => {
     try {
       const response = await fetch('http://localhost:7240/api/SurveyAnswer', {
         method: 'POST',
@@ -84,13 +86,9 @@ const survey = () => {
         },
         body: JSON.stringify({
           surveysFk: Number(submittedId),
-          answer: 'ok',
+          answer: answer,
         }),
       });
-      Alert.alert(JSON.stringify({
-        surveysFk: Number(submittedId),
-        answer: 'ok',
-      }));
       const json = await response.json();
       Alert.alert(JSON.stringify(json));
       return json;
