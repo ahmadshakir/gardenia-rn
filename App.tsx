@@ -52,18 +52,18 @@ const survey = () => {
     }
   };
 
-  const postSurvey = async () => {
-    Alert.alert(JSON.stringify(inputData));
-    return;
-    try {
-      const response = await fetch('http://localhost:7240/api/SurveyQuestion');
-      const json = await response.json();
-      Alert.alert(JSON.stringify(json));
-      return json.movies;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const postSurvey = async () => {
+  //   Alert.alert(JSON.stringify(inputData));
+  //   return;
+  //   try {
+  //     const response = await fetch('http://localhost:7240/api/SurveyQuestion');
+  //     const json = await response.json();
+  //     Alert.alert(JSON.stringify(json));
+  //     return json.movies;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     getSurveyQuestion();
@@ -96,20 +96,40 @@ const survey = () => {
 
 const postSurvey = async () => {
   try {
-    const response = await fetch('https://mywebsite.com/endpoint/', {
+    const response = await fetch('http://localhost:7240/api/Survey', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        firstParam: 'yourValue',
-        secondParam: 'yourOtherValue',
+        submitTime: new Date(),
       }),
     });
     const json = await response.json();
-    Alert.alert(JSON.stringify(json));
-    return json.movies;
+    Alert.alert(JSON.stringify(json.id));
+    return json;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const postAnswer = async () => {
+  try {
+    const response = await fetch('http://localhost:7240/api/SurveyAnswer', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        surveysFk: new Date(),
+        answer: new Date(),
+      }),
+    });
+    const json = await response.json();
+    Alert.alert(JSON.stringify(json.id));
+    return json;
   } catch (error) {
     console.error(error);
   }
