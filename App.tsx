@@ -15,7 +15,7 @@ import {useEffect, useState} from 'react';
 type Question = {id: string; question: string};
 
 const survey = () => {
-  const [text, onChangeText] = React.useState('Text');
+  const [text, onChangeText] = useState('');
   const [data, setData] = useState<Question[]>([]);
 
   const getSurveyQuestion = async () => {
@@ -40,7 +40,7 @@ const survey = () => {
         {data.map(input => (
           <View key={input.id}>
             <Text> {input.question}</Text>
-            <TextInput
+            <TextInput key={data.indexOf(input)}
               style={styles.input}
               // onChangeText={onChangeText}
               // value={text}
