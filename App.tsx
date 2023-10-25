@@ -120,6 +120,7 @@ const survey = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         {/* <Text>Pull down to see RefreshControl indicator</Text> */}
+        <View style={styles.spacer}></View>
         {data.map((input, index) => (
           <View key={input.id}>
             <Text> {input.question}</Text>
@@ -134,8 +135,7 @@ const survey = () => {
         <Button
           onPress={() => postSurvey()}
           title="Submit"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
+          color="blue"
         />
       </ScrollView>
     </SafeAreaView>
@@ -149,12 +149,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  spacer: {
+    height: 40,
+    margin: 12,
+    borderWidth: 0,
+    padding: 10,
+  },
   container: {
     flex: 1,
   },
   scrollView: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
