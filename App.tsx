@@ -9,6 +9,7 @@ import {
   ScrollView,
   View,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import {useEffect, useState} from 'react';
 
@@ -20,7 +21,17 @@ const survey = () => {
   const [inputData, setInputData] = useState<{text: string; index: number}[]>(
     [],
   );
-  let submittedId = 0
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getSurveyQuestion();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  let submittedId = 0;
 
   const addValues = (text: string, index: number) => {
     const dataArray = inputData;
@@ -66,9 +77,9 @@ const survey = () => {
         }),
       });
       const json = await response.json();
-      submittedId=json.id
+      submittedId = json.id;
       inputData.forEach(element => {
-        postAnswer(element.text)
+        postAnswer(element.text);
       });
       Alert.alert(JSON.stringify(json));
       return json;
@@ -103,8 +114,12 @@ const survey = () => {
   }, []);
 
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        {/* <Text>Pull down to see RefreshControl indicator</Text> */}
         {data.map((input, index) => (
           <View key={input.id}>
             <Text> {input.question}</Text>
@@ -133,6 +148,15 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
