@@ -15,7 +15,7 @@ import {useEffect, useState} from 'react';
 type Question = {id: string; question: string};
 
 const survey = () => {
-  const [text, onChangeText] = useState('');
+  // const [text, onChangeText] = useState('');
   const [data, setData] = useState<Question[]>([]);
   const [inputData, setInputData] = useState<{text: string; index: number}[]>(
     [],
@@ -96,7 +96,17 @@ const survey = () => {
 
 const postSurvey = async () => {
   try {
-    const response = await fetch('http://localhost:7240/api/SurveyQuestion');
+    const response = await fetch('https://mywebsite.com/endpoint/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstParam: 'yourValue',
+        secondParam: 'yourOtherValue',
+      }),
+    });
     const json = await response.json();
     Alert.alert(JSON.stringify(json));
     return json.movies;
