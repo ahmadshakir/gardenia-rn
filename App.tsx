@@ -17,6 +17,28 @@ type Question = {id: string; question: string};
 const survey = () => {
   const [text, onChangeText] = useState('');
   const [data, setData] = useState<Question[]>([]);
+  const [inputData, setInputData] = useState<{text: string; index: number}[]>(
+    [],
+  );
+
+  const addValues = (text: string, index: number) => {
+    const dataArray = inputData;
+    let checkBool = false;
+    if (dataArray.length !== 0) {
+      dataArray.forEach(element => {
+        if (element.index === index) {
+          element.text = text;
+          checkBool = true;
+        }
+      });
+    }
+    if (checkBool) {
+      setInputData(dataArray);
+    } else {
+      dataArray.push({text: text, index: index});
+      setInputData(dataArray);
+    }
+  };
 
   const getSurveyQuestion = async () => {
     try {
@@ -30,6 +52,19 @@ const survey = () => {
     }
   };
 
+  const postSurvey = async () => {
+    Alert.alert(JSON.stringify(inputData));
+    return;
+    try {
+      const response = await fetch('http://localhost:7240/api/SurveyQuestion');
+      const json = await response.json();
+      Alert.alert(JSON.stringify(json));
+      return json.movies;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getSurveyQuestion();
   }, []);
@@ -37,12 +72,13 @@ const survey = () => {
   return (
     <SafeAreaView>
       <ScrollView>
-        {data.map(input => (
+        {data.map((input, index) => (
           <View key={input.id}>
             <Text> {input.question}</Text>
-            <TextInput key={data.indexOf(input)}
+            <TextInput
+              key={index}
               style={styles.input}
-              // onChangeText={onChangeText}
+              onChangeText={(text: string) => addValues(text, index)}
               // value={text}
             />
           </View>
