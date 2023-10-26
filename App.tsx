@@ -13,12 +13,12 @@ import {
 } from 'react-native';
 import {useEffect, useState} from 'react';
 
-type Question = {id: string; question: string};
+type Question = {id: number; question: string; validationRule:string; };
 
 const survey = () => {
   // const [text, onChangeText] = useState('');
   const [data, setData] = useState<Question[]>([]);
-  const [inputData, setInputData] = useState<{text: string; index: number}[]>(
+  const [inputData, setInputData] = useState<{answer: string; index: number}[]>(
     [],
   );
   const [refreshing, setRefreshing] = React.useState(false);
@@ -34,22 +34,18 @@ const survey = () => {
   let submittedId = 0;
 
   const addValues = (text: string, index: number) => {
-    const dataArray = inputData;
-    let checkBool = false;
-    if (dataArray.length !== 0) {
-      dataArray.forEach(element => {
-        if (element.index === index) {
-          element.text = text;
-          checkBool = true;
-        }
-      });
-    }
-    if (checkBool) {
-      setInputData(dataArray);
+
+    const x = inputData.find(element => element.index==index)
+
+    if (x) {
+      x.answer=text
     } else {
-      dataArray.push({text: text, index: index});
-      setInputData(dataArray);
+      inputData.push({answer: text, index: index});
     }
+
+    // let x = [];
+
+    setInputData([...inputData]);
   };
 
   const getSurveyQuestion = async () => {
@@ -65,6 +61,30 @@ const survey = () => {
   };
 
   const postSurvey = async () => {
+
+    //Alert.alert("postSurvey")
+    for (let index = 0; index < inputData.length; index++) {
+      const element = inputData[index];
+      const question = data.find(d => d.id==element.index)
+      // console.log(element);
+      // console.log(validation);
+      // Alert.alert(JSON.stringify(element)+JSON.stringify(validation))
+      // Alert.alert(JSON.stringify(question!.validationRule))
+      // return;
+      const regex = new RegExp(question!.validationRule)
+      
+// Alert.alert(String(regex.test(element.answer)))
+      if (!regex.test(element.answer)){
+        Alert.alert("Validation fail for "+question?.question)
+        return;
+      }
+        // return
+
+    }
+  //  return;
+
+
+
     try {
       const response = await fetch('http://localhost:7240/api/Survey', {
         method: 'POST',
@@ -74,35 +94,12 @@ const survey = () => {
         },
         body: JSON.stringify({
           submitTime: new Date(),
+          surveyAnswers: inputData
         }),
       });
       const json = await response.json();
       submittedId = json.id;
-      inputData.forEach(element => {
-        postAnswer(element.text);
-      });
       Alert.alert(JSON.stringify(json));
-      return json;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const postAnswer = async (answer: String) => {
-    try {
-      const response = await fetch('http://localhost:7240/api/SurveyAnswer', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          surveysFk: Number(submittedId),
-          answer: answer,
-        }),
-      });
-      const json = await response.json();
-      // Alert.alert(JSON.stringify(json));
       return json;
     } catch (error) {
       console.error(error);
@@ -127,7 +124,8 @@ const survey = () => {
             <TextInput
               key={index}
               style={styles.input}
-              onChangeText={(text: string) => addValues(text, index)}
+              onChangeText={(text: string) => addValues(text, input.id)}
+
               // value={text}
             />
           </View>
